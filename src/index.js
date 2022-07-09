@@ -279,30 +279,40 @@ function levelUp() {
 
 function showStartScreen(ctx) {
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  ctx.drawImage(ship1, 95, canvas.height - 157, 75, 75);
-  ctx.drawImage(ship2, 265, canvas.height - 160, 75, 75);
-  ctx.drawImage(ship3, 430, canvas.height - 160, 75, 75);
-  ctx.drawImage(hyperionTitle, 30, 50, 550, 260);
+  ctx.drawImage(hyperionTitle, 30, 30, 550, 260);
+
+  const textOriginX = 100;
+  const textOriginY = 350;
+
+  ctx.drawImage(ship1, textOriginX - 5, textOriginY + 130, 75, 75);
+  ctx.drawImage(ship2, textOriginX + 165, textOriginY + 130, 75, 75);
+  ctx.drawImage(ship3, textOriginX + 330, textOriginY + 130, 75, 75);
+
   ctx.fillStyle = "white";
-  ctx.font = "bold 24px Courier New";
-  const text4 = "Select your ship:";
-  ctx.fillText(text4, canvas.width / 3.4, canvas.height / 2 + 70);
+
+  ctx.font = "22px Courier New";
+  const text1 = "For instructions, hit 'I' key.";
+  ctx.fillText(text1, textOriginX, textOriginY);
+
+  ctx.font = "bold 22px Courier New";
+  const text4 = "Press 1-3 to start.";
+  ctx.fillText(text4, textOriginX + 75, textOriginY + 50);
 
   ctx.font = "20px Courier New";
   const text5 = "Press 1:";
-  ctx.fillText(text5, canvas.width / 7, canvas.height / 1.42);
+  ctx.fillText(text5, textOriginX - 15, textOriginY + 110);
   const text6 = "Press 2:";
-  ctx.fillText(text6, canvas.width / 2.35, canvas.height / 1.42);
+  ctx.fillText(text6, textOriginX + 155, textOriginY + 110);
   const text7 = "Press 3:";
-  ctx.fillText(text7, (3 * canvas.width) / 4 - 30, canvas.height / 1.42);
+  ctx.fillText(text7, textOriginX + 320, textOriginY + 110);
 
   ctx.font = "17px Courier New";
   const text8 = '"Starship"';
-  ctx.fillText(text8, canvas.width / 7 - 5, canvas.height / 1.08);
+  ctx.fillText(text8, canvas.width / 7 - 5, textOriginY + 235);
   const text9 = '"Frog-Zap"';
-  ctx.fillText(text9, canvas.width / 2.36, canvas.height / 1.08);
+  ctx.fillText(text9, canvas.width / 2.36, textOriginY + 235);
   const text10 = '"Houdini"';
-  ctx.fillText(text10, (3 * canvas.width) / 4 - 26, canvas.height / 1.08);
+  ctx.fillText(text10, (3 * canvas.width) / 4 - 26, textOriginY + 235);
 }
 
 function showInstructions(ctx) {
@@ -310,7 +320,7 @@ function showInstructions(ctx) {
   ctx.drawImage(hyperionTitle, 150, 30, 300, 120);
 
   const textOriginX = 50;
-  const textOriginY = 211;
+  const textOriginY = 210;
   ctx.fillStyle = "#adadad";
   ctx.font = "bold 36px Courier New";
   const text1 = "INSTRUCTIONS:";
@@ -318,33 +328,35 @@ function showInstructions(ctx) {
 
   ctx.font = "24px Courier New";
   const text2 = "You must shoot the aliens who";
-  ctx.fillText(text2, textOriginX, 270);
+  ctx.fillText(text2, textOriginX, textOriginY + 60);
   const text3 = "are attempting to destroy";
-  ctx.fillText(text3, textOriginX, 310);
+  ctx.fillText(text3, textOriginX, textOriginY + 105);
   const text4 = "Saturn's Moon, Hyperion.";
-  ctx.fillText(text4, textOriginX, 350);
+  ctx.fillText(text4, textOriginX, textOriginY + 150);
   const text5 = "You have one life.";
-  ctx.fillText(text5, textOriginX, 410);
-  const text5a = "Press ESC to go back.";
-  ctx.fillText(text5a, textOriginX, 470);
+  ctx.fillText(text5, textOriginX, textOriginY + 205);
 
-  ctx.fillRect(80, 530, 280, 40);
-  ctx.fillRect(420, 530, 50, 40);
-  ctx.fillRect(500, 530, 50, 40);
+  ctx.font = "bold 24px Courier New";
+  const text5a = "Press ESC to go back.";
+  ctx.fillText(text5a, textOriginX, textOriginY + 260);
+
+  ctx.fillRect(80, textOriginY + 320, 280, 40);
+  ctx.fillRect(420, textOriginY + 320, 50, 40);
+  ctx.fillRect(500, textOriginY + 320, 50, 40);
 
   ctx.font = "20px Courier New";
   const text6 = "TO SHOOT:";
-  ctx.fillText(text6, 160, 520);
+  ctx.fillText(text6, textOriginX + 110, textOriginY + 310);
   const text7 = "TO MOVE:";
-  ctx.fillText(text7, 435, 520);
+  ctx.fillText(text7, textOriginX + 385, textOriginY + 310);
 
   ctx.fillStyle = "black";
   const text8 = "SPACEBAR";
-  ctx.fillText(text8, 165, 555);
+  ctx.fillText(text8, textOriginX + 115, textOriginY + 345);
   const text9 = "<";
-  ctx.fillText(text9, 440, 555);
+  ctx.fillText(text9, textOriginX + 390, textOriginY + 345);
   const text10 = ">";
-  ctx.fillText(text10, 520, 555);
+  ctx.fillText(text10, textOriginX + 470, textOriginY + 345);
 
   ctx.fillStyle = "#9df716";
   ctx.drawImage(ship1, 490, 400, 53, 53);
@@ -411,7 +423,7 @@ function displayGameOver() {
       ctx.font = "45px Courier New";
       ctx.fillText(text, 50, canvas.height / 5);
 
-      ctx.drawImage(hyperionMoon, 175, 155, 250, 250);
+      ctx.drawImage(hyperionMoon, 175, 185, 250, 250);
 
       let text2 = "Press Space Bar to Restart";
       ctx.font = "20px Courier New";
