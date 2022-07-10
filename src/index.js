@@ -2,6 +2,7 @@
 
 // To do:
 // - make game lost state prettier
+// - make game won state prettier
 // - make a dolphin shooter
 // - crisp pixelly images?
 // - get rid of x is null error messages
@@ -21,8 +22,7 @@ const ctx = canvas.getContext("2d");
 const GAME_STATE = {
   STARTSCREEN: 0,
   RUNNING: 1,
-  GAMEOVER: 2,
-  INSTRUCTIONS: 3
+  INSTRUCTIONS: 2
 };
 let gameState = GAME_STATE.RUNNING;
 let current_level = 1;
@@ -41,8 +41,14 @@ const hyperionTitle = new Image();
 hyperionTitle.src = "/src/images/hyperion.png";
 const hyperionMoon = new Image();
 hyperionMoon.src = "/src/images/hyperion_moon.jpg";
+const hyperionMoonBurning = new Image();
+hyperionMoonBurning.src = "/src/images/hyperion_moon_burning.png";
 const enemy2 = new Image();
 enemy2.src = "/src/images/pixel_enemy_2.png";
+const enemy4 = new Image();
+enemy4.src = "/src/images/pixel_enemy_4.png";
+const enemy6 = new Image();
+enemy6.src = "/src/images/pixel_enemy_6.png";
 
 const ship1 = new Image();
 ship1.src = "/src/images/pixel_ship_1.png";
@@ -107,6 +113,14 @@ let startGame = (event) => {
     }
     if (gameState === GAME_STATE.INSTRUCTIONS && event.code === "Escape") {
       donlimma.pause();
+      gameState = GAME_STATE.STARTSCREEN;
+      return;
+    }
+    if (
+      gameState === GAME_STATE.RUNNING &&
+      isGameOver &&
+      event.code === "Escape"
+    ) {
       gameState = GAME_STATE.STARTSCREEN;
       return;
     }
@@ -409,24 +423,35 @@ function displayGameOver() {
     // you lost :(
     else {
       const textOriginX = 100;
-      const textOriginY = 180;
+      const textOriginY = 100;
       let text = "Game Over!";
       ctx.fillStyle = "white";
       ctx.font = "70px Courier New";
       ctx.fillText(text, textOriginX, textOriginY);
 
       ctx.drawImage(
-        hyperionMoon,
-        textOriginX + 100,
-        textOriginY + 25,
+        hyperionMoonBurning,
+        textOriginX + 80,
+        textOriginY + 80,
         250,
         250
       );
-      // ctx.drawImage(hyperionMoon, textOriginX, textOriginY + 100, canvas.width, canvas.height);
+      ctx.drawImage(enemy2, textOriginX + 30, textOriginY + 80, 50, 50);
+      ctx.drawImage(enemy2, textOriginX + 50, textOriginY + 280, 50, 50);
+      ctx.drawImage(enemy2, textOriginX + 340, textOriginY + 230, 50, 50);
+      ctx.drawImage(enemy4, textOriginX + 332, textOriginY + 100, 50, 50);
+      ctx.drawImage(enemy4, textOriginX + 160, textOriginY + 340, 50, 50);
+      ctx.drawImage(enemy4, textOriginX + 20, textOriginY + 180, 50, 50);
+      ctx.drawImage(enemy6, textOriginX + 170, textOriginY + 20, 50, 50);
+      ctx.drawImage(enemy6, textOriginX + 280, textOriginY + 330, 50, 50);
 
       let text2 = "Press Space Bar to Restart";
-      ctx.font = "bold 20px Courier New";
-      ctx.fillText(text2, textOriginX + 60, textOriginY + 300);
+      ctx.font = "bold 24px Courier New";
+      ctx.fillText(text2, textOriginX + 20, textOriginY + 445);
+
+      ctx.font = "16px Courier New";
+      let text3 = "or hit ESC to choose new ship.";
+      ctx.fillText(text3, textOriginX + 60, textOriginY + 485);
     }
   }
 }
