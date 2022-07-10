@@ -24,12 +24,12 @@ const GAME_STATE = {
   RUNNING: 1,
   INSTRUCTIONS: 2
 };
-let gameState = GAME_STATE.RUNNING;
+let gameState = GAME_STATE.STARTSCREEN;
 let current_level = 1;
 let shipNum = 1;
 
-let isGameOver = true;
-let didWin = true;
+let isGameOver = false;
+let didWin = false;
 
 canvas.width = 600;
 canvas.height = 625;
@@ -58,8 +58,12 @@ const ship2 = new Image();
 ship2.src = "/src/images/pixel_ship_2.png";
 const ship3 = new Image();
 ship3.src = "/src/images/pixel_ship_3.png";
-const ship4 = new Image();
-ship4.src = "/src/images/pixel_ship_4.png";
+// const ship4 = new Image();
+// ship4.src = "/src/images/pixel_ship_4.png";
+// const ship5 = new Image();
+// ship5.src = "/src/images/pixel_ship_5.png";
+// const ship5 = new Image();
+// ship5.src = "/src/images/pixel_ship_5.png";
 
 const gameStartAudio = new Audio("src/audio/computerNoise_000.ogg");
 gameStartAudio.volume = 0.022;
@@ -103,6 +107,8 @@ let startGame = (event) => {
     event.code === "Digit1" ||
     event.code === "Digit2" ||
     event.code === "Digit3" ||
+    event.code === "Digit5" ||
+    event.code === "Digit6" ||
     event.code === "Digit7" ||
     event.code === "KeyI" ||
     event.code === "Escape"
@@ -123,16 +129,55 @@ let startGame = (event) => {
       isGameOver &&
       event.code === "Escape"
     ) {
+      inDaClub.pause();
       gameState = GAME_STATE.STARTSCREEN;
       return;
     }
     if (gameState === GAME_STATE.STARTSCREEN || isGameOver) {
+      if (event.code === "Digit1") {
+        shipNum = 1;
+        player = new Player(canvas, 18, playerBulletController, shipNum);
+      }
       if (event.code === "Digit2") {
         shipNum = 2;
         player = new Player(canvas, 18, playerBulletController, shipNum);
       }
       if (event.code === "Digit3") {
         shipNum = 3;
+        playerBulletController = new BulletController(
+          canvas,
+          "#9df716",
+          "player",
+          current_level,
+          shipNum
+        );
+        enemyController = new EnemyController(
+          canvas,
+          enemyBulletController,
+          playerBulletController,
+          current_level
+        );
+        player = new Player(canvas, 18, playerBulletController, shipNum);
+      }
+      if (event.code === "Digit5") {
+        shipNum = 5;
+        playerBulletController = new BulletController(
+          canvas,
+          "#9df716",
+          "player",
+          current_level,
+          shipNum
+        );
+        enemyController = new EnemyController(
+          canvas,
+          enemyBulletController,
+          playerBulletController,
+          current_level
+        );
+        player = new Player(canvas, 18, playerBulletController, shipNum);
+      }
+      if (event.code === "Digit6") {
+        shipNum = 6;
         playerBulletController = new BulletController(
           canvas,
           "#9df716",
@@ -175,8 +220,8 @@ let startGame = (event) => {
         oldTownRoad.currentTime = 0;
         oldTownRoad.play();
       } else {
-        gasolina.currentTime = 0;
         inDaClub.pause();
+        gasolina.currentTime = 0;
         gasolina.play();
       }
     }
@@ -420,10 +465,10 @@ function displayGameOver() {
 
       ctx.drawImage(
         hyperionMoonHappy,
-        textOriginX + 10,
-        textOriginY + 60,
-        350,
-        300
+        textOriginX + 20,
+        textOriginY + 70,
+        325,
+        275
       );
       const currShip = new Image();
       currShip.src = `/src/images/pixel_ship_${shipNum}.png`;
