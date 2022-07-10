@@ -85,7 +85,7 @@ export default class EnemyController {
 
   fireBullet() {
     this.fireBulletTimer--;
-    if (this.fireBulletTimer <= 0) {
+    if (this.fireBulletTimer <= 0 && this.enemyRows.length > 0) {
       this.fireBulletTimer = this.fireBulletTimerDefault;
       const allEnemies = this.enemyRows.flat();
       const enemyIndex = Math.floor(Math.random() * allEnemies.length);

@@ -1,9 +1,9 @@
 // Youtube: https://www.youtube.com/watch?v=qCBiKJbLcFI
 
 // To do:
-// - make game lost state prettier
-// - make game won state prettier
-// - make a dolphin shooter
+// BOOM - make game lost state prettier
+// BOOM - make game won state prettier
+// BOOM - make a dolphin shooter
 // - crisp pixelly images?
 // - get rid of x is null error messages
 // - make more easter eggs
