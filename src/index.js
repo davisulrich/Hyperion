@@ -13,6 +13,7 @@ import EnemyController from "/src/enemyController.js";
 import Player from "/src/player.js";
 import BulletController from "/src/bulletController.js";
 import showStartScreenF from "/src/startScreens.js";
+import showInstructionsF from "/src/instructionsScreen.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -23,16 +24,17 @@ const GAME_STATE = {
   GAMEOVER: 2,
   INSTRUCTIONS: 3
 };
-let gameState = GAME_STATE.STARTSCREEN;
+let gameState = GAME_STATE.RUNNING;
 let current_level = 1;
 let shipNum = 1;
 
-let isGameOver = false;
+let isGameOver = true;
 let didWin = false;
 
 canvas.width = 600;
 canvas.height = 625;
 
+// #region Images and Audio
 const background = new Image();
 background.src = "/src/images/pixel_stars.jpg";
 const hyperionTitle = new Image();
@@ -84,6 +86,7 @@ const level2Image = new Image();
 level2Image.src = "/src/images/level_2.png";
 const level3Image = new Image();
 level3Image.src = "/src/images/level_3.png";
+// #endregion
 
 // event listener arrow function
 let startGame = (event) => {
@@ -166,7 +169,7 @@ let startGame = (event) => {
 
 document.addEventListener("keydown", startGame);
 
-// important variables
+// #region Initiate Variables
 let playerBulletController = new BulletController(
   canvas,
   "#9df716",
@@ -190,11 +193,11 @@ let enemyController = new EnemyController(
 );
 
 let player = new Player(canvas, 18, playerBulletController, shipNum);
+// #endregion
 
 // game loop
 function game() {
   if (gameState === GAME_STATE.STARTSCREEN) {
-    // showStartScreen(ctx);
     showStartScreenF(
       ctx,
       canvas,
@@ -205,7 +208,8 @@ function game() {
       ship3
     );
   } else if (gameState === GAME_STATE.INSTRUCTIONS) {
-    showInstructions(ctx);
+    // showInstructions(ctx);
+    showInstructionsF(ctx, canvas, background, hyperionTitle, ship1, enemy2);
   } else if (gameState === GAME_STATE.RUNNING) {
     checkGameOver();
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
@@ -288,6 +292,55 @@ function levelUp() {
   levelUpSound.play();
 }
 
+// function showInstructions(ctx) {
+//   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+//   ctx.drawImage(hyperionTitle, 150, 30, 300, 120);
+
+//   const textOriginX = 50;
+//   const textOriginY = 210;
+//   ctx.fillStyle = "#adadad";
+//   ctx.font = "bold 36px Courier New";
+//   const text1 = "INSTRUCTIONS:";
+//   ctx.fillText(text1, textOriginX + 110, textOriginY);
+
+//   ctx.font = "24px Courier New";
+//   const text2 = "You must shoot the aliens who";
+//   ctx.fillText(text2, textOriginX, textOriginY + 60);
+//   const text3 = "are attempting to destroy";
+//   ctx.fillText(text3, textOriginX, textOriginY + 105);
+//   const text4 = "Saturn's Moon, Hyperion.";
+//   ctx.fillText(text4, textOriginX, textOriginY + 150);
+//   const text5 = "You have one life.";
+//   ctx.fillText(text5, textOriginX, textOriginY + 205);
+
+//   ctx.font = "bold 24px Courier New";
+//   const text5a = "Press ESC to go back.";
+//   ctx.fillText(text5a, textOriginX, textOriginY + 260);
+
+//   ctx.fillRect(80, textOriginY + 320, 280, 40);
+//   ctx.fillRect(420, textOriginY + 320, 50, 40);
+//   ctx.fillRect(500, textOriginY + 320, 50, 40);
+
+//   ctx.font = "20px Courier New";
+//   const text6 = "TO SHOOT:";
+//   ctx.fillText(text6, textOriginX + 110, textOriginY + 310);
+//   const text7 = "TO MOVE:";
+//   ctx.fillText(text7, textOriginX + 385, textOriginY + 310);
+
+//   ctx.fillStyle = "black";
+//   const text8 = "SPACEBAR";
+//   ctx.fillText(text8, textOriginX + 115, textOriginY + 345);
+//   const text9 = "<";
+//   ctx.fillText(text9, textOriginX + 390, textOriginY + 345);
+//   const text10 = ">";
+//   ctx.fillText(text10, textOriginX + 470, textOriginY + 345);
+
+//   ctx.fillStyle = "#9df716";
+//   ctx.drawImage(ship1, 490, 400, 53, 53);
+//   ctx.fillRect(514, 300, 3.75, 15);
+//   ctx.drawImage(enemy2, 490, 150, 50, 50);
+// }
+
 function checkGameOver() {
   if (isGameOver) {
     return;
@@ -355,16 +408,27 @@ function displayGameOver() {
     }
     // you lost :(
     else {
+      const textOriginX = 100;
+      const textOriginY = 180;
       let text = "Game Over!";
       ctx.fillStyle = "white";
       ctx.font = "70px Courier New";
-      ctx.fillText(text, canvas.width / 6, canvas.height / 2.2);
+      ctx.fillText(text, textOriginX, textOriginY);
+
+      ctx.drawImage(
+        hyperionMoon,
+        textOriginX + 100,
+        textOriginY + 25,
+        250,
+        250
+      );
+      // ctx.drawImage(hyperionMoon, textOriginX, textOriginY + 100, canvas.width, canvas.height);
 
       let text2 = "Press Space Bar to Restart";
-      ctx.font = "20px Courier New";
-      ctx.fillText(text2, canvas.width / 4, (3 * canvas.height) / 5);
+      ctx.font = "bold 20px Courier New";
+      ctx.fillText(text2, textOriginX + 60, textOriginY + 300);
     }
   }
 }
 
-setInterval(game, 100000 / 20);
+setInterval(game, 1000 / 20);
