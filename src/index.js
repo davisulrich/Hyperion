@@ -29,7 +29,7 @@ let current_level = 1;
 let shipNum = 1;
 
 let isGameOver = true;
-let didWin = false;
+let didWin = true;
 
 canvas.width = 600;
 canvas.height = 625;
@@ -43,6 +43,8 @@ const hyperionMoon = new Image();
 hyperionMoon.src = "/src/images/hyperion_moon.jpg";
 const hyperionMoonBurning = new Image();
 hyperionMoonBurning.src = "/src/images/hyperion_moon_burning.png";
+const hyperionMoonHappy = new Image();
+hyperionMoonHappy.src = "/src/images/hyperion_moon_happy.png";
 const enemy2 = new Image();
 enemy2.src = "/src/images/pixel_enemy_2.png";
 const enemy4 = new Image();
@@ -409,16 +411,36 @@ function displayGameOver() {
   if (isGameOver) {
     // you won!
     if (didWin) {
+      const textOriginX = 50;
+      const textOriginY = 100;
       let text = "You Saved Hyperion!";
       ctx.fillStyle = "white";
       ctx.font = "45px Courier New";
-      ctx.fillText(text, 50, canvas.height / 5);
+      ctx.fillText(text, textOriginX, textOriginY);
 
-      ctx.drawImage(hyperionMoon, 175, 185, 250, 250);
+      ctx.drawImage(
+        hyperionMoonHappy,
+        textOriginX + 10,
+        textOriginY + 60,
+        350,
+        300
+      );
+      const currShip = new Image();
+      currShip.src = `/src/images/pixel_ship_${shipNum}.png`;
+      ctx.drawImage(currShip, textOriginX + 390, textOriginY + 285, 53, 53);
+      const enemyDeath = new Image();
+      enemyDeath.src = "/src/images/pixel_enemy_death.png";
+      ctx.drawImage(enemyDeath, textOriginX + 390, textOriginY + 105, 53, 53);
 
       let text2 = "Press Space Bar to Restart";
-      ctx.font = "20px Courier New";
-      ctx.fillText(text2, canvas.width / 4, (4 * canvas.height) / 5);
+      ctx.font = "bold 24px Courier New";
+      ctx.fillText(text2, textOriginX + 60, textOriginY + 430);
+      ctx.font = "16px Courier New";
+      let text3 = "or hit ESC to choose new ship.";
+      ctx.fillText(text3, textOriginX + 110, textOriginY + 475);
+
+      ctx.fillStyle = "#9df716";
+      ctx.fillRect(textOriginX + 412, textOriginY + 180, 3.75, 15);
     }
     // you lost :(
     else {
