@@ -1,6 +1,7 @@
 // Youtube: https://www.youtube.com/watch?v=qCBiKJbLcFI
 
 // To do:
+// - make game lost state prettier
 // - make a dolphin shooter
 // - crisp pixelly images?
 // - get rid of x is null error messages
@@ -11,6 +12,7 @@
 import EnemyController from "/src/enemyController.js";
 import Player from "/src/player.js";
 import BulletController from "/src/bulletController.js";
+import showStartScreenF from "/src/startScreens.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -192,7 +194,16 @@ let player = new Player(canvas, 18, playerBulletController, shipNum);
 // game loop
 function game() {
   if (gameState === GAME_STATE.STARTSCREEN) {
-    showStartScreen(ctx);
+    // showStartScreen(ctx);
+    showStartScreenF(
+      ctx,
+      canvas,
+      background,
+      hyperionTitle,
+      ship1,
+      ship2,
+      ship3
+    );
   } else if (gameState === GAME_STATE.INSTRUCTIONS) {
     showInstructions(ctx);
   } else if (gameState === GAME_STATE.RUNNING) {
@@ -277,93 +288,6 @@ function levelUp() {
   levelUpSound.play();
 }
 
-function showStartScreen(ctx) {
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  ctx.drawImage(hyperionTitle, 30, 30, 550, 260);
-
-  const textOriginX = 100;
-  const textOriginY = 350;
-
-  ctx.drawImage(ship1, textOriginX - 5, textOriginY + 130, 75, 75);
-  ctx.drawImage(ship2, textOriginX + 165, textOriginY + 130, 75, 75);
-  ctx.drawImage(ship3, textOriginX + 330, textOriginY + 130, 75, 75);
-
-  ctx.fillStyle = "white";
-
-  ctx.font = "22px Courier New";
-  const text1 = "For instructions, hit 'I' key.";
-  ctx.fillText(text1, textOriginX, textOriginY);
-
-  ctx.font = "bold 22px Courier New";
-  const text4 = "Press 1-3 to start.";
-  ctx.fillText(text4, textOriginX + 75, textOriginY + 50);
-
-  ctx.font = "20px Courier New";
-  const text5 = "Press 1:";
-  ctx.fillText(text5, textOriginX - 15, textOriginY + 110);
-  const text6 = "Press 2:";
-  ctx.fillText(text6, textOriginX + 155, textOriginY + 110);
-  const text7 = "Press 3:";
-  ctx.fillText(text7, textOriginX + 320, textOriginY + 110);
-
-  ctx.font = "17px Courier New";
-  const text8 = '"Starship"';
-  ctx.fillText(text8, canvas.width / 7 - 5, textOriginY + 235);
-  const text9 = '"Frog-Zap"';
-  ctx.fillText(text9, canvas.width / 2.36, textOriginY + 235);
-  const text10 = '"Houdini"';
-  ctx.fillText(text10, (3 * canvas.width) / 4 - 26, textOriginY + 235);
-}
-
-function showInstructions(ctx) {
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  ctx.drawImage(hyperionTitle, 150, 30, 300, 120);
-
-  const textOriginX = 50;
-  const textOriginY = 210;
-  ctx.fillStyle = "#adadad";
-  ctx.font = "bold 36px Courier New";
-  const text1 = "INSTRUCTIONS:";
-  ctx.fillText(text1, textOriginX + 110, textOriginY);
-
-  ctx.font = "24px Courier New";
-  const text2 = "You must shoot the aliens who";
-  ctx.fillText(text2, textOriginX, textOriginY + 60);
-  const text3 = "are attempting to destroy";
-  ctx.fillText(text3, textOriginX, textOriginY + 105);
-  const text4 = "Saturn's Moon, Hyperion.";
-  ctx.fillText(text4, textOriginX, textOriginY + 150);
-  const text5 = "You have one life.";
-  ctx.fillText(text5, textOriginX, textOriginY + 205);
-
-  ctx.font = "bold 24px Courier New";
-  const text5a = "Press ESC to go back.";
-  ctx.fillText(text5a, textOriginX, textOriginY + 260);
-
-  ctx.fillRect(80, textOriginY + 320, 280, 40);
-  ctx.fillRect(420, textOriginY + 320, 50, 40);
-  ctx.fillRect(500, textOriginY + 320, 50, 40);
-
-  ctx.font = "20px Courier New";
-  const text6 = "TO SHOOT:";
-  ctx.fillText(text6, textOriginX + 110, textOriginY + 310);
-  const text7 = "TO MOVE:";
-  ctx.fillText(text7, textOriginX + 385, textOriginY + 310);
-
-  ctx.fillStyle = "black";
-  const text8 = "SPACEBAR";
-  ctx.fillText(text8, textOriginX + 115, textOriginY + 345);
-  const text9 = "<";
-  ctx.fillText(text9, textOriginX + 390, textOriginY + 345);
-  const text10 = ">";
-  ctx.fillText(text10, textOriginX + 470, textOriginY + 345);
-
-  ctx.fillStyle = "#9df716";
-  ctx.drawImage(ship1, 490, 400, 53, 53);
-  ctx.fillRect(514, 300, 3.75, 15);
-  ctx.drawImage(enemy2, 490, 150, 50, 50);
-}
-
 function checkGameOver() {
   if (isGameOver) {
     return;
@@ -443,4 +367,4 @@ function displayGameOver() {
   }
 }
 
-setInterval(game, 1000 / 20);
+setInterval(game, 100000 / 20);
