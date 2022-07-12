@@ -42,10 +42,6 @@ function showStartScreenF(
   ctx.fillText(text9, textOriginX + 155, textOriginY + 235);
   const text10 = '"Houdini"';
   ctx.fillText(text10, textOriginX + 325, textOriginY + 235);
-
-  const unicorn = new Image();
-  unicorn.src = "/src/images/pixel_ship_4.png";
-  ctx.drawImage(unicorn, 30, 30, 260, 260);
 }
 
 export default showStartScreenF;

@@ -4,8 +4,10 @@
 // BOOM - make game lost state prettier
 // BOOM - make game won state prettier
 // BOOM - make a dolphin shooter
+// - make a challenge level after you win the game
+// - middle finger shooter with heavy music
 // - crisp pixelly images?
-// - get rid of x is null error messages
+// BOOM? - get rid of x is null error messages
 // - make more easter eggs
 // - decide on a rule for double shooting, implement it
 // - design new ships
@@ -58,12 +60,6 @@ const ship2 = new Image();
 ship2.src = "/src/images/pixel_ship_2.png";
 const ship3 = new Image();
 ship3.src = "/src/images/pixel_ship_3.png";
-// const ship4 = new Image();
-// ship4.src = "/src/images/pixel_ship_4.png";
-// const ship5 = new Image();
-// ship5.src = "/src/images/pixel_ship_5.png";
-// const ship5 = new Image();
-// ship5.src = "/src/images/pixel_ship_5.png";
 
 const gameStartAudio = new Audio("src/audio/computerNoise_000.ogg");
 gameStartAudio.volume = 0.022;
@@ -102,118 +98,19 @@ level3Image.src = "/src/images/level_3.png";
 
 // event listener arrow function
 let startGame = (event) => {
-  if (
-    event.code === "Space" ||
-    event.code === "Digit1" ||
-    event.code === "Digit2" ||
-    event.code === "Digit3" ||
-    event.code === "Digit5" ||
-    event.code === "Digit6" ||
-    event.code === "Digit7" ||
-    event.code === "KeyI" ||
-    event.code === "Escape"
-  ) {
-    if (gameState === GAME_STATE.STARTSCREEN && event.code === "KeyI") {
-      donlimma.currentTime = 0;
-      donlimma.play();
-      gameState = GAME_STATE.INSTRUCTIONS;
-      return;
-    }
-    if (gameState === GAME_STATE.INSTRUCTIONS && event.code === "Escape") {
-      donlimma.pause();
-      gameState = GAME_STATE.STARTSCREEN;
-      return;
-    }
-    if (
-      gameState === GAME_STATE.RUNNING &&
-      isGameOver &&
-      event.code === "Escape"
-    ) {
+  if (gameState === GAME_STATE.STARTSCREEN && event.code === "KeyI") {
+    donlimma.currentTime = 0;
+    donlimma.play();
+    gameState = GAME_STATE.INSTRUCTIONS;
+  } else if (gameState === GAME_STATE.INSTRUCTIONS && event.code === "Escape") {
+    donlimma.pause();
+    gameState = GAME_STATE.STARTSCREEN;
+  } else if (gameState === GAME_STATE.RUNNING && isGameOver) {
+    if (event.code === "Escape") {
       inDaClub.pause();
       gameState = GAME_STATE.STARTSCREEN;
-      return;
-    }
-    if (gameState === GAME_STATE.STARTSCREEN || isGameOver) {
-      if (event.code === "Digit1") {
-        shipNum = 1;
-        player = new Player(canvas, 18, playerBulletController, shipNum);
-      }
-      if (event.code === "Digit2") {
-        shipNum = 2;
-        player = new Player(canvas, 18, playerBulletController, shipNum);
-      }
-      if (event.code === "Digit3") {
-        shipNum = 3;
-        playerBulletController = new BulletController(
-          canvas,
-          "#9df716",
-          "player",
-          current_level,
-          shipNum
-        );
-        enemyController = new EnemyController(
-          canvas,
-          enemyBulletController,
-          playerBulletController,
-          current_level
-        );
-        player = new Player(canvas, 18, playerBulletController, shipNum);
-      }
-      if (event.code === "Digit5") {
-        shipNum = 5;
-        playerBulletController = new BulletController(
-          canvas,
-          "#9df716",
-          "player",
-          current_level,
-          shipNum
-        );
-        enemyController = new EnemyController(
-          canvas,
-          enemyBulletController,
-          playerBulletController,
-          current_level
-        );
-        player = new Player(canvas, 18, playerBulletController, shipNum);
-      }
-      if (event.code === "Digit6") {
-        shipNum = 6;
-        playerBulletController = new BulletController(
-          canvas,
-          "#9df716",
-          "player",
-          current_level,
-          shipNum
-        );
-        enemyController = new EnemyController(
-          canvas,
-          enemyBulletController,
-          playerBulletController,
-          current_level
-        );
-        player = new Player(canvas, 18, playerBulletController, shipNum);
-      }
-      if (event.code === "Digit7") {
-        shipNum = 4;
-        playerBulletController = new BulletController(
-          canvas,
-          "#9df716",
-          "player",
-          current_level,
-          shipNum
-        );
-        enemyController = new EnemyController(
-          canvas,
-          enemyBulletController,
-          playerBulletController,
-          current_level
-        );
-        player = new Player(canvas, 18, playerBulletController, shipNum);
-      }
-      // if you lost, reset everything
-      if (isGameOver) {
-        resetAllVariables();
-      }
+    } else if (event.code === "Space") {
+      resetAllVariables();
       gameState = GAME_STATE.RUNNING;
       gameStartAudio.play();
       if (shipNum === 4) {
@@ -224,6 +121,91 @@ let startGame = (event) => {
         gasolina.currentTime = 0;
         gasolina.play();
       }
+    }
+  } else if (gameState === GAME_STATE.STARTSCREEN) {
+    if (event.code === "Digit1") {
+      shipNum = 1;
+      player = new Player(canvas, 18, playerBulletController, shipNum);
+    } else if (event.code === "Digit2") {
+      shipNum = 2;
+      player = new Player(canvas, 18, playerBulletController, shipNum);
+    } else if (event.code === "Digit3") {
+      shipNum = 3;
+      playerBulletController = new BulletController(
+        canvas,
+        "#9df716",
+        "player",
+        current_level,
+        shipNum
+      );
+      enemyController = new EnemyController(
+        canvas,
+        enemyBulletController,
+        playerBulletController,
+        current_level
+      );
+      player = new Player(canvas, 18, playerBulletController, shipNum);
+    } else if (event.code === "Digit5") {
+      shipNum = 5;
+      playerBulletController = new BulletController(
+        canvas,
+        "#9df716",
+        "player",
+        current_level,
+        shipNum
+      );
+      enemyController = new EnemyController(
+        canvas,
+        enemyBulletController,
+        playerBulletController,
+        current_level
+      );
+      player = new Player(canvas, 18, playerBulletController, shipNum);
+    } else if (event.code === "Digit6") {
+      shipNum = 6;
+      playerBulletController = new BulletController(
+        canvas,
+        "#9df716",
+        "player",
+        current_level,
+        shipNum
+      );
+      enemyController = new EnemyController(
+        canvas,
+        enemyBulletController,
+        playerBulletController,
+        current_level
+      );
+      player = new Player(canvas, 18, playerBulletController, shipNum);
+    } else if (event.code === "Digit7") {
+      shipNum = 4;
+      playerBulletController = new BulletController(
+        canvas,
+        "#9df716",
+        "player",
+        current_level,
+        shipNum
+      );
+      enemyController = new EnemyController(
+        canvas,
+        enemyBulletController,
+        playerBulletController,
+        current_level
+      );
+      player = new Player(canvas, 18, playerBulletController, shipNum);
+    }
+    if (isGameOver) {
+      resetAllVariables();
+    }
+    gameState = GAME_STATE.RUNNING;
+    gameStartAudio.play();
+    if (shipNum === 4) {
+      oldTownRoad.currentTime = 0;
+      oldTownRoad.play();
+    } else {
+      inDaClub.pause();
+      gasolina.currentTime = 0;
+      gasolina.play();
     }
   }
 };
