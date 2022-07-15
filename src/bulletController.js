@@ -15,14 +15,14 @@ export default class BulletController {
     if (this.bulletType === "player") this.shootSound.volume = 0.1;
     else this.shootSound.volume = 0.01;
 
-    // if (this.level === 3 && this.bulletType === "player") {
-    //   this.bulletColor = "#6eddff";
-    // }
     if (this.shipNum === 4 && this.bulletType === "player") {
       this.bulletColor = "#e75eff";
     }
     if (this.shipNum === 5 && this.bulletType === "player") {
       this.bulletColor = "#6eddff";
+    }
+    if (this.shipNum === 9 && this.bulletType === "player") {
+      this.bulletColor = "#d40000";
     }
   }
 
@@ -70,6 +70,15 @@ export default class BulletController {
           this.bulletColor
         );
         this.bullets.push(bullet1, bullet2);
+      } else if (this.shipNum === 9 && this.bulletType === "player") {
+        const bullet = new Bullet(
+          this.canvas,
+          x - 5,
+          y,
+          velocity,
+          this.bulletColor
+        );
+        this.bullets.push(bullet);
       } else {
         const bullet = new Bullet(
           this.canvas,

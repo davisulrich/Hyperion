@@ -4,13 +4,19 @@
 // BOOM - make game lost state prettier
 // BOOM - make game won state prettier
 // BOOM - make a dolphin shooter
-// - make a challenge level after you win the game
-// - middle finger shooter with heavy music
-// - crisp pixelly images?
 // BOOM? - get rid of x is null error messages
+// BOOM - middle finger shooter with heavy music
+// BOOM - ship #9: flashes images of monster trucks, don't tread on me flag, storming the capital, etc
+// - disable space bar when you won the game
+// - make it a longer game - 8 levels that you can only beat if you have the double shooter
+// - make a challenge level after you win the game
 // - make more easter eggs
 // - decide on a rule for double shooting, implement it
 // - design new ships
+
+// Too difficult:
+// - make the background scroll
+// - crisp pixelly images?
 
 import EnemyController from "/src/enemyController.js";
 import Player from "/src/player.js";
@@ -86,6 +92,16 @@ const oldTownRoad = new Audio("src/audio/oldTownRoad.mp3");
 oldTownRoad.volume = 0.45;
 const donlimma = new Audio("src/audio/Donlimma.mp3");
 donlimma.volume = 0.45;
+const rage = new Audio("src/audio/GuerrillaRadio.mp3");
+rage.volume = 0.45;
+
+// timer for how long until to show the next rage photo
+let rageNum = 1;
+let nextRagePhotoTimer = 100;
+let showRagePhoto = false;
+let ragePhotoTimer = 40;
+let rage_photo = new Image();
+rage_photo.src = `/src/images/rage_${rageNum}.png`;
 
 let levelUpTextTimer = 40;
 const level1Image = new Image();
@@ -108,6 +124,8 @@ let startGame = (event) => {
   } else if (gameState === GAME_STATE.RUNNING && isGameOver) {
     if (event.code === "Escape") {
       inDaClub.pause();
+      rage.pause();
+      oldTownRoad.pause();
       gameState = GAME_STATE.STARTSCREEN;
     } else if (event.code === "Space") {
       resetAllVariables();
@@ -116,13 +134,25 @@ let startGame = (event) => {
       if (shipNum === 4) {
         oldTownRoad.currentTime = 0;
         oldTownRoad.play();
+      } else if (shipNum === 9) {
+        rage.currentTime = 0;
+        rage.play();
       } else {
         inDaClub.pause();
         gasolina.currentTime = 0;
         gasolina.play();
       }
     }
-  } else if (gameState === GAME_STATE.STARTSCREEN) {
+  } else if (
+    gameState === GAME_STATE.STARTSCREEN &&
+    (event.code === "Digit1" ||
+      event.code === "Digit2" ||
+      event.code === "Digit3" ||
+      event.code === "Digit5" ||
+      event.code === "Digit6" ||
+      event.code === "Digit7" ||
+      event.code === "Digit9")
+  ) {
     if (event.code === "Digit1") {
       shipNum = 1;
       player = new Player(canvas, 18, playerBulletController, shipNum);
@@ -193,6 +223,22 @@ let startGame = (event) => {
         current_level
       );
       player = new Player(canvas, 18, playerBulletController, shipNum);
+    } else if (event.code === "Digit9") {
+      shipNum = 9;
+      playerBulletController = new BulletController(
+        canvas,
+        "#9df716",
+        "player",
+        current_level,
+        shipNum
+      );
+      enemyController = new EnemyController(
+        canvas,
+        enemyBulletController,
+        playerBulletController,
+        current_level
+      );
+      player = new Player(canvas, 18, playerBulletController, shipNum);
     }
     if (isGameOver) {
       resetAllVariables();
@@ -202,6 +248,9 @@ let startGame = (event) => {
     if (shipNum === 4) {
       oldTownRoad.currentTime = 0;
       oldTownRoad.play();
+    } else if (shipNum === 9) {
+      rage.currentTime = 0;
+      rage.play();
     } else {
       inDaClub.pause();
       gasolina.currentTime = 0;
@@ -271,6 +320,30 @@ function game() {
         }
         levelUpTextTimer--;
       }
+      // for ship #9 (middle finger, show images on an interval)
+      if (shipNum === 9 && rageNum <= 4) {
+        if (nextRagePhotoTimer <= 0) {
+          nextRagePhotoTimer = 100;
+          showRagePhoto = true;
+        }
+        if (showRagePhoto && ragePhotoTimer > 0) {
+          ctx.drawImage(rage_photo, 80, 100, 450, 300);
+          ragePhotoTimer--;
+        }
+        if (showRagePhoto && ragePhotoTimer === 0) {
+          showRagePhoto = false;
+          ragePhotoTimer = 40;
+          if (rageNum === 4) {
+            rageNum = 1;
+          } else {
+            rageNum++;
+          }
+          rage_photo.src = `/src/images/rage_${rageNum}.png`;
+        } else {
+          nextRagePhotoTimer--;
+        }
+      }
+
       playerBulletController.draw(ctx);
       enemyBulletController.draw(ctx);
     }
@@ -282,6 +355,10 @@ function resetAllVariables() {
   isGameOver = false;
   didWin = false;
   levelUpTextTimer = 40;
+  rageNum = 1;
+  nextRagePhotoTimer = 100;
+  showRagePhoto = false;
+  ragePhotoTimer = 40;
 
   playerBulletController = new BulletController(
     canvas,
@@ -335,55 +412,6 @@ function levelUp() {
   levelUpSound.play();
 }
 
-// function showInstructions(ctx) {
-//   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-//   ctx.drawImage(hyperionTitle, 150, 30, 300, 120);
-
-//   const textOriginX = 50;
-//   const textOriginY = 210;
-//   ctx.fillStyle = "#adadad";
-//   ctx.font = "bold 36px Courier New";
-//   const text1 = "INSTRUCTIONS:";
-//   ctx.fillText(text1, textOriginX + 110, textOriginY);
-
-//   ctx.font = "24px Courier New";
-//   const text2 = "You must shoot the aliens who";
-//   ctx.fillText(text2, textOriginX, textOriginY + 60);
-//   const text3 = "are attempting to destroy";
-//   ctx.fillText(text3, textOriginX, textOriginY + 105);
-//   const text4 = "Saturn's Moon, Hyperion.";
-//   ctx.fillText(text4, textOriginX, textOriginY + 150);
-//   const text5 = "You have one life.";
-//   ctx.fillText(text5, textOriginX, textOriginY + 205);
-
-//   ctx.font = "bold 24px Courier New";
-//   const text5a = "Press ESC to go back.";
-//   ctx.fillText(text5a, textOriginX, textOriginY + 260);
-
-//   ctx.fillRect(80, textOriginY + 320, 280, 40);
-//   ctx.fillRect(420, textOriginY + 320, 50, 40);
-//   ctx.fillRect(500, textOriginY + 320, 50, 40);
-
-//   ctx.font = "20px Courier New";
-//   const text6 = "TO SHOOT:";
-//   ctx.fillText(text6, textOriginX + 110, textOriginY + 310);
-//   const text7 = "TO MOVE:";
-//   ctx.fillText(text7, textOriginX + 385, textOriginY + 310);
-
-//   ctx.fillStyle = "black";
-//   const text8 = "SPACEBAR";
-//   ctx.fillText(text8, textOriginX + 115, textOriginY + 345);
-//   const text9 = "<";
-//   ctx.fillText(text9, textOriginX + 390, textOriginY + 345);
-//   const text10 = ">";
-//   ctx.fillText(text10, textOriginX + 470, textOriginY + 345);
-
-//   ctx.fillStyle = "#9df716";
-//   ctx.drawImage(ship1, 490, 400, 53, 53);
-//   ctx.fillRect(514, 300, 3.75, 15);
-//   ctx.drawImage(enemy2, 490, 150, 50, 50);
-// }
-
 function checkGameOver() {
   if (isGameOver) {
     return;
@@ -397,6 +425,7 @@ function checkGameOver() {
     gasolina.pause();
     vocalFunction.pause();
     inDaClub.pause();
+    rage.pause();
     playerDeathSound.play();
   }
   if (enemyController.enemyRows.length > 0) {
@@ -410,7 +439,7 @@ function checkGameOver() {
   if (enemyController.enemyRows.length === 0) {
     if (current_level === 1) {
       current_level = 2;
-      if (shipNum !== 4) {
+      if (shipNum !== 4 && shipNum !== 9) {
         gasolina.pause();
         vocalFunction.currentTime = 0;
         vocalFunction.play();
@@ -419,7 +448,7 @@ function checkGameOver() {
       return;
     } else if (current_level === 2) {
       current_level = 3;
-      if (shipNum !== 4) {
+      if (shipNum !== 4 && shipNum !== 9) {
         vocalFunction.pause();
         inDaClub.currentTime = 0;
         inDaClub.play();
