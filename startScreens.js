@@ -8,7 +8,8 @@ function showStartScreenF(
   ship3
 ) {
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  ctx.drawImage(hyperionTitle, 30, 30, 550, 260);
+  // ctx.drawImage(hyperionTitle, 30, 30, 550, 260);
+  ctx.drawImage(hyperionTitle, 50, 90, 500, 165);
 
   const textOriginX = 100;
   const textOriginY = 350;
@@ -19,15 +20,17 @@ function showStartScreenF(
 
   ctx.fillStyle = "white";
 
-  ctx.font = "18px Courier New";
-  const text1 = "For instructions, hit 'I' key.";
-  ctx.fillText(text1, textOriginX + 40, textOriginY + 17);
+  ctx.font = "24px Silkscreen";
+  const text1 = "By Davis Ulrich";
+  ctx.fillStyle = "#7d7d7d";
+  ctx.fillText(text1, textOriginX + 80, textOriginY - 30);
 
-  // ctx.font = "bold 22px Courier New";
-  // const text4 = "Press 1-3 to start.";
-  // ctx.fillText(text4, textOriginX + 75, textOriginY + 50);
+  ctx.fillStyle = "white";
+  ctx.font = "20px Silkscreen";
+  const text4 = "Challenge Edition-'C'  Instructions-'I'";
+  ctx.fillText(text4, textOriginX - 48, textOriginY + 40);
 
-  ctx.font = "20px Courier New";
+  ctx.font = "18px Silkscreen";
   const text5 = "Press 1:";
   ctx.fillText(text5, textOriginX - 15, textOriginY + 110);
   const text6 = "Press 2:";
@@ -35,11 +38,12 @@ function showStartScreenF(
   const text7 = "Press 3:";
   ctx.fillText(text7, textOriginX + 320, textOriginY + 110);
 
-  ctx.font = "17px Courier New";
+  ctx.fillStyle = "#7d7d7d";
+  ctx.font = "16px Silkscreen";
   const text8 = '"Starship"';
   ctx.fillText(text8, textOriginX - 20, textOriginY + 235);
   const text9 = '"Frog-Zap"';
-  ctx.fillText(text9, textOriginX + 155, textOriginY + 235);
+  ctx.fillText(text9, textOriginX + 150, textOriginY + 235);
   const text10 = '"Houdini"';
   ctx.fillText(text10, textOriginX + 325, textOriginY + 235);
 }

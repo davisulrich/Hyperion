@@ -1,4 +1,5 @@
 // Youtube: https://www.youtube.com/watch?v=qCBiKJbLcFI
+// Images: https://gvituri.itch.io/
 
 // To do:
 // - multiple ships for challenging level
@@ -14,18 +15,6 @@
 // - instructions: PRESS C for a challenge version
 // - make your own profile, shop for ships, upload a photo to be your ship, and store off your most recent tries
 // - make it an iPhone app
-
-// Done:
-// - flashing level signs for level 7 and 9
-// - 3 lives for challenging level - pick up at beginning of level u left off on
-// - make a noise for getting double shooter
-// - need a way to pass double shooter variable to new levels
-// - create level 4 - 10 signs for beginning of level
-// - have to earn double shooting
-// - add 4 more levels
-// - new enemy capabilities:
-//        - have to shoot twice to kill
-//        - shoot more bullets
 
 import EnemyController from "/enemyController.js";
 import Player from "/player.js";
@@ -61,10 +50,12 @@ const background = new Image();
 background.src = "/images/pixel_stars.jpg";
 const hyperionTitle = new Image();
 hyperionTitle.src = "/images/hyperion.png";
-const hyperionMoon = new Image();
-hyperionMoon.src = "/images/hyperion_moon.jpg";
-const hyperionMoonBurning = new Image();
-hyperionMoonBurning.src = "/images/hyperion_moon_burning.png";
+const hyperion = new Image();
+hyperion.src = "/images/hyperion-title-v9.png";
+const goldCoin = new Image();
+goldCoin.src = "/images/gold_coin.png";
+const playerDeathImage = new Image();
+playerDeathImage.src = "/images/player_death.png";
 const hyperionMoonHappy = new Image();
 hyperionMoonHappy.src = "/images/hyperion_moon_happy.png";
 const enemy2 = new Image();
@@ -305,15 +296,7 @@ let player = new Player(canvas, 18, playerBulletController, shipNum);
 // game loop
 function game() {
   if (gameState === GAME_STATE.STARTSCREEN) {
-    showStartScreenF(
-      ctx,
-      canvas,
-      background,
-      hyperionTitle,
-      ship1,
-      ship2,
-      ship3
-    );
+    showStartScreenF(ctx, canvas, background, hyperion, ship1, ship2, ship3);
   } else if (gameState === GAME_STATE.INSTRUCTIONS) {
     // showInstructions(ctx);
     showInstructionsF(ctx, canvas, background, hyperionTitle, ship1, enemy2);
@@ -652,68 +635,47 @@ function displayGameOver() {
       const textOriginY = 125;
       let text = "You Won!";
       ctx.fillStyle = "white";
-      ctx.font = "55px Courier New";
-      ctx.fillText(text, textOriginX + 120, textOriginY);
+      ctx.font = "75px Silkscreen";
+      ctx.fillText(text, textOriginX + 30, textOriginY);
 
-      ctx.drawImage(
-        hyperionMoon,
-        textOriginX + 40,
-        textOriginY + 110,
-        200,
-        172
-      );
+      ctx.drawImage(goldCoin, textOriginX + 40, textOriginY + 100, 200, 200);
+
       const currShip = new Image();
       currShip.src = `/images/pixel_ship_${shipNum}.png`;
-      ctx.drawImage(currShip, textOriginX + 350, textOriginY + 260, 53, 53);
+      ctx.drawImage(currShip, textOriginX + 320, textOriginY + 250, 106, 106);
       const enemyDeath = new Image();
       enemyDeath.src = "/images/pixel_enemy_death.png";
-      ctx.drawImage(enemyDeath, textOriginX + 350, textOriginY + 85, 53, 53);
+      ctx.drawImage(enemyDeath, textOriginX + 326, textOriginY + 35, 106, 106);
 
-      let text2 = "Hit ESC to go back to Start Screen";
-      ctx.font = "24px Courier New";
-      ctx.fillText(text2, textOriginX + 5, textOriginY + 400);
+      let text2 = "Hit Escape for Start Screen";
+      ctx.font = "24px Silkscreen";
+      ctx.fillText(text2, textOriginX + 35, textOriginY + 430);
 
       ctx.fillStyle = "#9df716";
-      ctx.fillRect(textOriginX + 372, textOriginY + 170, 3.75, 15);
-
-      // const mittens = new Image();
-      // mittens.src = "/images/pixel_ship_6.png";
-      // ctx.drawImage(mittens, textOriginX + 150, textOriginY + 70, 53, 53);
-
-      // ctx.font = "15px Courier New";
-      // let text3 = "The secret word is: 'Mittens'";
-      // ctx.fillText(text3, textOriginX + 210, textOriginY + 60);
+      ctx.fillRect(textOriginX + 369, textOriginY + 160, 7.5, 30);
     }
-    // you lost :(
+    // you lost
     else {
       const textOriginX = 100;
       const textOriginY = 100;
       let text = "Game Over!";
       ctx.fillStyle = "white";
-      ctx.font = "70px Courier New";
-      ctx.fillText(text, textOriginX, textOriginY);
+      ctx.font = "70px Silkscreen";
+      ctx.fillText(text, textOriginX - 40, textOriginY);
 
       ctx.drawImage(
-        hyperionMoonBurning,
+        playerDeathImage,
         textOriginX + 80,
         textOriginY + 80,
         250,
         250
       );
-      ctx.drawImage(enemy2, textOriginX + 30, textOriginY + 80, 50, 50);
-      ctx.drawImage(enemy2, textOriginX + 50, textOriginY + 280, 50, 50);
-      ctx.drawImage(enemy2, textOriginX + 340, textOriginY + 230, 50, 50);
-      ctx.drawImage(enemy4, textOriginX + 332, textOriginY + 100, 50, 50);
-      ctx.drawImage(enemy4, textOriginX + 160, textOriginY + 340, 50, 50);
-      ctx.drawImage(enemy4, textOriginX + 20, textOriginY + 180, 50, 50);
-      ctx.drawImage(enemy6, textOriginX + 170, textOriginY + 20, 50, 50);
-      ctx.drawImage(enemy6, textOriginX + 280, textOriginY + 330, 50, 50);
 
       let text2 = "Press Space Bar to Restart";
-      ctx.font = "bold 24px Courier New";
-      ctx.fillText(text2, textOriginX + 20, textOriginY + 445);
+      ctx.font = "24px Silkscreen";
+      ctx.fillText(text2, textOriginX - 20, textOriginY + 420);
 
-      ctx.font = "16px Courier New";
+      ctx.font = "16px Silkscreen";
       let text3 = "or hit ESC to choose new ship.";
       ctx.fillText(text3, textOriginX + 60, textOriginY + 485);
     }
@@ -729,15 +691,15 @@ function displayLostLife() {
 
   let text = "You Lost A Life!";
   ctx.fillStyle = "white";
-  ctx.font = "45px Courier New";
+  ctx.font = "45px Silkscreen";
   ctx.fillText(text, textOriginX, textOriginY);
 
   let text2 = "Press R to continue";
-  ctx.font = "bold 25px Courier New";
+  ctx.font = "bold 25px Silkscreen";
   ctx.fillText(text2, textOriginX + 60, textOriginY + 90);
 
   let text3 = `You have ${playerLives} more live(s):`;
-  ctx.font = "25px Courier New";
+  ctx.font = "25px Silkscreen";
   ctx.fillText(text3, textOriginX + 50, textOriginY + 185);
 
   const currShip = new Image();
