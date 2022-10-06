@@ -168,12 +168,8 @@ export default class BulletController {
       this.hasFired = true;
     } else if (this.timeTillShooterUpgrade > 0) {
       ctx.fillStyle = "#9df716";
-      ctx.font = "bold 20px Courier New";
-      ctx.fillText(
-        `Time till upgrade: ${this.timeTillShooterUpgrade}`,
-        320,
-        30
-      );
+      ctx.font = "32px Silkscreen";
+      ctx.fillText(`Time till upgrade: ${this.timeTillShooterUpgrade}`, 75, 30);
       this.timeTillShooterUpgrade--;
     } else if (this.timeTillShooterUpgrade === 0) {
       this.doubleShooterAudio.play();

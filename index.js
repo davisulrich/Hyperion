@@ -687,7 +687,7 @@ function displayLostLife() {
   const textOriginY = 250;
 
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-  ctx.drawImage(hyperionTitle, 150, 30, 300, 120);
+  ctx.drawImage(hyperion, 150, 30, 300, 120);
 
   let text = "You Lost A Life!";
   ctx.fillStyle = "white";
@@ -696,11 +696,11 @@ function displayLostLife() {
 
   let text2 = "Press R to continue";
   ctx.font = "bold 25px Silkscreen";
-  ctx.fillText(text2, textOriginX + 60, textOriginY + 90);
+  ctx.fillText(text2, textOriginX + 40, textOriginY + 90);
 
   let text3 = `You have ${playerLives} more live(s):`;
   ctx.font = "25px Silkscreen";
-  ctx.fillText(text3, textOriginX + 50, textOriginY + 185);
+  ctx.fillText(text3, textOriginX + 35, textOriginY + 185);
 
   const currShip = new Image();
   currShip.src = `/images/pixel_ship_${shipNum}.png`;
